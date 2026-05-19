@@ -1,0 +1,11 @@
+.git
+.idea
+.vscode
+target/
+*.jar
+*.class
+.env
+.env.*
+test-smtp*.js
+node_modules/
+package*.json
