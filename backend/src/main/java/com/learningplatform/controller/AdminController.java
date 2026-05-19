@@ -49,19 +49,64 @@ public class AdminController {
                 .setParameter("uid", id)
                 .executeUpdate();
 
-        // 2. Delete all courses this user owns as instructor
-        //    (JPA cascade ALL on lessons/assignments/reviews handles children automatically)
+        // 2. Remove assignment_students assignments for this user
+        entityManager.createNativeQuery("DELETE FROM assignment_students WHERE student_id = :uid")
+                .setParameter("uid", id)
+                .executeUpdate();
+
+        // 3. Remove teacher_students relationships for this user
+        entityManager.createNativeQuery("DELETE FROM teacher_students WHERE teacher_id = :uid OR student_id = :uid")
+                .setParameter("uid", id)
+                .executeUpdate();
+
+        // 4. Remove reviews written by this user
+        entityManager.createNativeQuery("DELETE FROM reviews WHERE user_id = :uid")
+                .setParameter("uid", id)
+                .executeUpdate();
+
+        // 5. Delete all submissions by this user
+        entityManager.createNativeQuery("DELETE FROM submissions WHERE student_id = :uid")
+                .setParameter("uid", id)
+                .executeUpdate();
+
+        // 6. Delete all lesson completions by this user
+        entityManager.createNativeQuery("DELETE FROM lesson_completions WHERE user_id = :uid")
+                .setParameter("uid", id)
+                .executeUpdate();
+
+        // 7. Delete all courses this user owns as instructor (along with all child references)
         List<Course> ownedCourses = courseRepository.findByInstructor(user);
         for (Course course : ownedCourses) {
-            // Remove enrolled students from join table first to avoid FK issue
+            // Remove enrolled students from join table
             entityManager.createNativeQuery("DELETE FROM student_courses WHERE course_id = :cid")
                     .setParameter("cid", course.getId())
                     .executeUpdate();
+            
+            // Remove assignment students join table entries for the course's assignments
+            entityManager.createNativeQuery("DELETE FROM assignment_students WHERE assignment_id IN (SELECT id FROM assignments WHERE course_id = :cid)")
+                    .setParameter("cid", course.getId())
+                    .executeUpdate();
+
+            // Delete all submissions for assignments of this course
+            entityManager.createNativeQuery("DELETE FROM submissions WHERE assignment_id IN (SELECT id FROM assignments WHERE course_id = :cid)")
+                    .setParameter("cid", course.getId())
+                    .executeUpdate();
+
+            // Delete reviews for this course
+            entityManager.createNativeQuery("DELETE FROM reviews WHERE course_id = :cid")
+                    .setParameter("cid", course.getId())
+                    .executeUpdate();
+
+            // Delete completions for lessons of this course
+            entityManager.createNativeQuery("DELETE FROM lesson_completions WHERE lesson_id IN (SELECT id FROM lessons WHERE course_id = :cid)")
+                    .setParameter("cid", course.getId())
+                    .executeUpdate();
+
             entityManager.flush();
             courseRepository.delete(course);
         }
 
-        // 3. Clean up legacy tables that JPA no longer knows about
+        // 8. Clean up legacy tables that JPA no longer knows about
         String[] legacyTables = { "study_path_steps", "study_paths", "quiz_attempts" };
         for (String table : legacyTables) {
             try {
@@ -79,7 +124,7 @@ public class AdminController {
             }
         }
 
-        // 4. Finally delete the user
+        // 9. Finally delete the user
         userRepository.delete(user);
         return ResponseEntity.ok().build();
     }
