@@ -1,3 +1,8 @@
+# ===== Secrets / Environment =====
+.env
+.env.*
+!.env.example
+
 # ===== Frontend =====
 frontend/node_modules/
 frontend/dist/
