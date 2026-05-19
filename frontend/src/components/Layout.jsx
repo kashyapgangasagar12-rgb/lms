@@ -137,8 +137,17 @@ export default function Layout() {
               <h6 className="fw-bold mb-3 text-white">Explore</h6>
               <ul className="list-unstyled mb-0">
                 <li className="mb-2"><Link to="/courses" className="text-white text-decoration-none small opacity-75 hover-opacity-100 d-inline-block">Browse Courses</Link></li>
-                <li className="mb-2"><Link to="/login" className="text-white text-decoration-none small opacity-75 hover-opacity-100 d-inline-block">Sign In</Link></li>
-                <li className="mb-2"><Link to="/register" className="text-white text-decoration-none small opacity-75 hover-opacity-100 d-inline-block">Sign Up</Link></li>
+                {!user ? (
+                  <>
+                    <li className="mb-2"><Link to="/login" className="text-white text-decoration-none small opacity-75 hover-opacity-100 d-inline-block">Sign In</Link></li>
+                    <li className="mb-2"><Link to="/register" className="text-white text-decoration-none small opacity-75 hover-opacity-100 d-inline-block">Sign Up</Link></li>
+                  </>
+                ) : (
+                  <>
+                    <li className="mb-2"><Link to={user.role === 'STUDENT' ? '/dashboard' : '/teacher'} className="text-white text-decoration-none small opacity-75 hover-opacity-100 d-inline-block">My Dashboard</Link></li>
+                    <li className="mb-2"><span onClick={handleLogout} className="text-white text-decoration-none small opacity-75 hover-opacity-100 d-inline-block cursor-pointer">Log Out</span></li>
+                  </>
+                )}
               </ul>
             </div>
             

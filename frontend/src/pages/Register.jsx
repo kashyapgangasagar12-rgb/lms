@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 
 export default function Register() {
@@ -13,8 +13,7 @@ export default function Register() {
   const navigate = useNavigate()
 
   if (user) {
-    navigate(user.role === 'STUDENT' ? '/dashboard' : '/teacher', { replace: true })
-    return null
+    return <Navigate to={user.role === 'ADMIN' ? '/admin' : (user.role === 'STUDENT' ? '/dashboard' : '/teacher')} replace />
   }
 
   const handleSubmit = async (e) => {
