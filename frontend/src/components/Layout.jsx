@@ -7,6 +7,7 @@ export default function Layout() {
   const navigate = useNavigate()
   const location = useLocation()
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,14 +19,17 @@ export default function Layout() {
 
   const handleLogout = () => {
     logout()
+    setIsNavCollapsed(true)
     navigate('/login')
   }
 
+  const closeMenu = () => setIsNavCollapsed(true)
+
   return (
     <div className="d-flex flex-column min-vh-100">
-      <nav className={`navbar navbar-expand-lg navbar-dark sticky-top transition-all py-3 ${isScrolled ? 'scrolled shadow-lg' : 'bg-transparent'}`} style={{ zIndex: 1100 }}>
+      <nav className={`navbar navbar-expand-lg navbar-light sticky-top transition-all py-3 ${isScrolled ? 'scrolled shadow-lg' : 'bg-transparent'}`} style={{ zIndex: 1100 }}>
         <div className="container">
-          <Link to="/" className="navbar-brand fw-bold text-dark fs-3 d-flex align-items-center gap-2">
+          <Link to="/" onClick={closeMenu} className="navbar-brand fw-bold text-dark fs-3 d-flex align-items-center gap-2">
             <span className="text-primary" style={{ color: 'var(--color-primary)' }}>LMS</span>
             <div className="vr d-none d-sm-block ms-2 opacity-25" style={{ height: '1.5rem' }}></div>
             <span className="navbar-tagline d-none d-sm-block text-muted fw-normal" style={{ fontSize: '0.85rem', letterSpacing: '0.5px' }}>
@@ -41,23 +45,23 @@ export default function Layout() {
             />
           </div>
 
-          <button className="navbar-toggler border-0 shadow-none text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span className="navbar-toggler-icon" style={{ filter: 'invert(0)' }}></span>
+          <button className="navbar-toggler border-0 shadow-none" type="button" onClick={() => setIsNavCollapsed(!isNavCollapsed)} aria-controls="navbarNav" aria-expanded={!isNavCollapsed} aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon" style={{ filter: 'brightness(0)' }}></span>
           </button>
 
-          <div className="collapse navbar-collapse" id="navbarNav">
+          <div className={`${isNavCollapsed ? 'collapse' : 'collapse show'} navbar-collapse`} id="navbarNav">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-1">
               <li className="nav-item">
-                <Link to="/" className={`nav-link px-3 ${location.pathname === '/' ? 'text-primary fw-bold' : 'text-dark'}`}>Home</Link>
+                <Link to="/" onClick={closeMenu} className={`nav-link px-3 ${location.pathname === '/' ? 'text-primary fw-bold' : 'text-dark'}`}>Home</Link>
               </li>
 
               {user?.role === 'STUDENT' && (
                 <>
                   <li className="nav-item">
-                    <Link to="/dashboard" className={`nav-link px-3 ${location.pathname === '/dashboard' ? 'text-primary fw-bold' : 'text-dark'}`}>Dashboard</Link>
+                    <Link to="/dashboard" onClick={closeMenu} className={`nav-link px-3 ${location.pathname === '/dashboard' ? 'text-primary fw-bold' : 'text-dark'}`}>Dashboard</Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/courses" className={`nav-link px-3 ${location.pathname.startsWith('/courses') ? 'text-primary fw-bold' : 'text-dark'}`}>My Learning</Link>
+                    <Link to="/courses" onClick={closeMenu} className={`nav-link px-3 ${location.pathname.startsWith('/courses') ? 'text-primary fw-bold' : 'text-dark'}`}>My Learning</Link>
                   </li>
                 </>
               )}
@@ -65,13 +69,13 @@ export default function Layout() {
               {user?.role === 'TEACHER' && (
                 <>
                   <li className="nav-item">
-                    <Link to="/teacher" className={`nav-link px-3 ${location.pathname === '/teacher' ? 'text-primary fw-bold' : 'text-dark'}`}>Instructor Hub</Link>
+                    <Link to="/teacher" onClick={closeMenu} className={`nav-link px-3 ${location.pathname === '/teacher' ? 'text-primary fw-bold' : 'text-dark'}`}>Instructor Hub</Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/manage-courses" className={`nav-link px-3 ${location.pathname === '/manage-courses' ? 'text-primary fw-bold' : 'text-dark'}`}>Course Builder</Link>
+                    <Link to="/manage-courses" onClick={closeMenu} className={`nav-link px-3 ${location.pathname === '/manage-courses' ? 'text-primary fw-bold' : 'text-dark'}`}>Course Builder</Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/manage-assignments" className={`nav-link px-3 ${location.pathname === '/manage-assignments' ? 'text-primary fw-bold' : 'text-dark'}`}>Grading</Link>
+                    <Link to="/manage-assignments" onClick={closeMenu} className={`nav-link px-3 ${location.pathname === '/manage-assignments' ? 'text-primary fw-bold' : 'text-dark'}`}>Grading</Link>
                   </li>
                 </>
               )}
@@ -79,13 +83,13 @@ export default function Layout() {
                {user?.role === 'ADMIN' && (
                 <>
                   <li className="nav-item">
-                    <Link to="/admin" className={`nav-link px-3 ${location.pathname === '/admin' ? 'text-primary fw-bold' : 'text-dark'}`}>Admin Control</Link>
+                    <Link to="/admin" onClick={closeMenu} className={`nav-link px-3 ${location.pathname === '/admin' ? 'text-primary fw-bold' : 'text-dark'}`}>Admin Control</Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/manage-courses" className={`nav-link px-3 ${location.pathname === '/manage-courses' ? 'text-primary fw-bold' : 'text-dark'}`}>Course Builder</Link>
+                    <Link to="/manage-courses" onClick={closeMenu} className={`nav-link px-3 ${location.pathname === '/manage-courses' ? 'text-primary fw-bold' : 'text-dark'}`}>Course Builder</Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/teacher" className={`nav-link px-3 ${location.pathname === '/teacher' ? 'text-primary fw-bold' : 'text-dark'}`}>Instructor Hub</Link>
+                    <Link to="/teacher" onClick={closeMenu} className={`nav-link px-3 ${location.pathname === '/teacher' ? 'text-primary fw-bold' : 'text-dark'}`}>Instructor Hub</Link>
                   </li>
                 </>
               )}
@@ -102,8 +106,8 @@ export default function Layout() {
                 </div>
               ) : (
                 <div className="d-flex gap-2 align-items-center">
-                  <Link to="/login" className="btn btn-udemy-secondary btn-sm">Log In</Link>
-                  <Link to="/register" className="btn btn-udemy-primary btn-sm">Sign Up</Link>
+                  <Link to="/login" onClick={closeMenu} className="btn btn-udemy-secondary btn-sm">Log In</Link>
+                  <Link to="/register" onClick={closeMenu} className="btn btn-udemy-primary btn-sm">Sign Up</Link>
                 </div>
               )}
             </div>

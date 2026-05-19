@@ -6,7 +6,7 @@ export default function Terms() {
         <p className="lead text-muted">Last Updated: May 20, 2026</p>
       </div>
 
-      <div className="card border-0 shadow-sm p-4 p-md-5 bg-off-white" style={{ borderRadius: '1rem' }}>
+      <div className="card border-0 shadow-sm p-3 p-md-5 bg-off-white" style={{ borderRadius: '1rem' }}>
         <section className="mb-4">
           <h3 className="fw-bold mb-3 text-dark">1. Acceptance of Terms</h3>
           <p className="text-gray" style={{ lineHeight: '1.7' }}>
