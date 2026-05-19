@@ -21,6 +21,8 @@ import Privacy from './pages/Privacy'
 import AboutUs from './pages/AboutUs'
 import Support from './pages/Support'
 import Terms from './pages/Terms'
+import Contact from './pages/Contact'
+import Cookies from './pages/Cookies'
 
 function PrivateRoute({ children, roles }) {
   const { user, loading } = useAuth()
@@ -54,6 +56,8 @@ export default function App() {
         <Route path="about" element={<AboutUs />} />
         <Route path="support" element={<Support />} />
         <Route path="terms" element={<Terms />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="cookies" element={<Cookies />} />
       </Route>
     </Routes>
   )
