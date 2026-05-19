@@ -30,7 +30,7 @@ public class DataSeeder implements CommandLineRunner {
         log.info("Starting data seeding...");
 
         User admin = User.builder().email("admin@test.com").password(passwordEncoder.encode("password"))
-                .fullName("Admin").role(Role.ADMIN).build();
+                .fullName("Admin").role(Role.ADMIN).isVerified(true).build();
 
         if (userRepository.count() == 0) {
             userRepository.saveAll(List.of(admin));
