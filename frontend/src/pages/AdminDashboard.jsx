@@ -61,20 +61,20 @@ export default function AdminDashboard() {
 
     return (
         <div className="container-udemy py-5">
-            <div className="mb-5 d-flex justify-content-between align-items-end">
+            <div className="mb-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                 <div>
-                    <h1 className="fw-bold mb-2">Admin Dashboard</h1>
-                    <p className="lead text-gray mb-0">Platform-wide management and monitoring.</p>
+                    <h1 className="fw-bold mb-2 text-center text-md-start">Admin Dashboard</h1>
+                    <p className="lead text-gray mb-0 text-center text-md-start">Platform-wide management and monitoring.</p>
                 </div>
-                <div className="btn-group shadow-sm" style={{ borderRadius: '0.5rem', overflow: 'hidden' }}>
+                <div className="btn-group shadow-sm w-100-mobile align-self-center align-self-md-auto" style={{ borderRadius: '0.5rem', overflow: 'hidden', maxWidth: '240px' }}>
                     <button 
-                        className={`btn ${activeTab === 'users' ? 'btn-dark' : 'btn-light border'}`}
+                        className={`btn ${activeTab === 'users' ? 'btn-dark' : 'btn-light border'} w-50`}
                         onClick={() => setActiveTab('users')}
                     >
                         Users
                     </button>
                     <button 
-                        className={`btn ${activeTab === 'courses' ? 'btn-dark' : 'btn-light border'}`}
+                        className={`btn ${activeTab === 'courses' ? 'btn-dark' : 'btn-light border'} w-50`}
                         onClick={() => setActiveTab('courses')}
                     >
                         Courses
@@ -84,23 +84,23 @@ export default function AdminDashboard() {
 
             {activeTab === 'users' ? (
                 <>
-                    <div className="row g-4 mb-5 animate-fade-in">
-                        <div className="col-md-4">
-                            <div className="card shadow-sm border-0 p-4 text-center glass-card">
-                                <div className="h1 fw-bold mb-1 text-primary">{users.length}</div>
-                                <div className="small text-muted fw-bold">TOTAL USERS</div>
+                    <div className="row g-3 g-md-4 mb-5 animate-fade-in">
+                        <div className="col-12 col-sm-4">
+                            <div className="card shadow-sm border-0 p-3 p-md-4 text-center glass-card">
+                                <div className="fs-3 fs-md-1 fw-bold mb-1 text-primary">{users.length}</div>
+                                <div className="extra-small text-muted fw-bold text-uppercase">TOTAL USERS</div>
                             </div>
                         </div>
-                        <div className="col-md-4">
-                            <div className="card shadow-sm border-0 p-4 text-center glass-card">
-                                <div className="h1 fw-bold mb-1 text-success">{studentCount}</div>
-                                <div className="small text-muted fw-bold">STUDENTS</div>
+                        <div className="col-12 col-sm-4">
+                            <div className="card shadow-sm border-0 p-3 p-md-4 text-center glass-card">
+                                <div className="fs-3 fs-md-1 fw-bold mb-1 text-success">{studentCount}</div>
+                                <div className="extra-small text-muted fw-bold text-uppercase">STUDENTS</div>
                             </div>
                         </div>
-                        <div className="col-md-4">
-                            <div className="card shadow-sm border-0 p-4 text-center glass-card">
-                                <div className="h1 fw-bold mb-1 text-info">{teacherCount}</div>
-                                <div className="small text-muted fw-bold">INSTRUCTORS</div>
+                        <div className="col-12 col-sm-4">
+                            <div className="card shadow-sm border-0 p-3 p-md-4 text-center glass-card">
+                                <div className="fs-3 fs-md-1 fw-bold mb-1 text-info">{teacherCount}</div>
+                                <div className="extra-small text-muted fw-bold text-uppercase">INSTRUCTORS</div>
                             </div>
                         </div>
                     </div>

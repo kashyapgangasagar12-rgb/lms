@@ -150,11 +150,11 @@ export default function CourseManagement() {
                                 <td className="py-3"><span className="badge bg-light text-dark border">{c.category}</span></td>
                                 <td className="py-3 text-end px-4">
                                     {(c.instructorId === user?.id || user?.role === 'ADMIN') ? (
-                                        <>
-                                            <button className="btn btn-udemy-secondary btn-sm me-2" onClick={() => openReviews(c)}>Reviews</button>
-                                            <button className="btn btn-udemy-secondary btn-sm me-2" onClick={() => openCurriculum(c)}>Curriculum</button>
+                                        <div className="d-flex flex-wrap gap-2 justify-content-end">
+                                            <button className="btn btn-udemy-secondary btn-sm" onClick={() => openReviews(c)}>Reviews</button>
+                                            <button className="btn btn-udemy-secondary btn-sm" onClick={() => openCurriculum(c)}>Curriculum</button>
                                             <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(c.id)}>Delete</button>
-                                        </>
+                                        </div>
                                     ) : (
                                         <span className="badge bg-light text-muted border">🔒 Not your course</span>
                                     )}

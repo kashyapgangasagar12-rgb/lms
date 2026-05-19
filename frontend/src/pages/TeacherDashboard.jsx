@@ -117,29 +117,29 @@ export default function TeacherDashboard() {
         <p className="text-muted">Manage your courses and track student performance.</p>
       </div>
 
-      <div className="row g-4 mb-5">
-        <div className="col-md-3">
-          <div className="card shadow-sm border-0 p-4 text-center h-100">
-            <div className="h1 fw-bold text-dark mb-1">{students.length}</div>
-            <div className="small text-muted fw-bold">TOTAL STUDENTS</div>
+      <div className="row g-3 g-md-4 mb-5 animate-fade-in">
+        <div className="col-6 col-md-3">
+          <div className="card shadow-sm border-0 p-3 p-md-4 text-center h-100 glass-card">
+            <div className="fs-3 fs-md-1 fw-bold text-dark mb-1">{students.length}</div>
+            <div className="extra-small text-muted fw-bold text-uppercase">Total Students</div>
           </div>
         </div>
-        <div className="col-md-3">
-          <div className="card shadow-sm border-0 p-4 text-center h-100">
-            <div className="h1 fw-bold text-dark mb-1">{analytics?.totalAssignments || 0}</div>
-            <div className="small text-muted fw-bold">ACTIVE ASSIGNMENTS</div>
+        <div className="col-6 col-md-3">
+          <div className="card shadow-sm border-0 p-3 p-md-4 text-center h-100 glass-card">
+            <div className="fs-3 fs-md-1 fw-bold text-dark mb-1">{analytics?.totalAssignments || 0}</div>
+            <div className="extra-small text-muted fw-bold text-uppercase">Active Assignments</div>
           </div>
         </div>
-        <div className="col-md-3">
-          <div className="card shadow-sm border-0 p-4 text-center h-100">
-            <div className="h1 fw-bold text-primary mb-1">{analytics?.pendingGrades || 0}</div>
-            <div className="small text-muted fw-bold">PENDING REVIEW</div>
+        <div className="col-6 col-md-3">
+          <div className="card shadow-sm border-0 p-3 p-md-4 text-center h-100 glass-card">
+            <div className="fs-3 fs-md-1 fw-bold text-primary mb-1">{analytics?.pendingGrades || 0}</div>
+            <div className="extra-small text-muted fw-bold text-uppercase">Pending Review</div>
           </div>
         </div>
-        <div className="col-md-3">
-          <div className="card shadow-sm border-0 p-4 text-center h-100">
-            <div className="h1 fw-bold text-dark mb-1">{analytics?.averageScore?.toFixed(1) || 0}%</div>
-            <div className="small text-muted fw-bold">AVG. PERFORMANCE</div>
+        <div className="col-6 col-md-3">
+          <div className="card shadow-sm border-0 p-3 p-md-4 text-center h-100 glass-card">
+            <div className="fs-3 fs-md-1 fw-bold text-dark mb-1">{analytics?.averageScore?.toFixed(1) || 0}%</div>
+            <div className="extra-small text-muted fw-bold text-uppercase">Avg. Performance</div>
           </div>
         </div>
       </div>

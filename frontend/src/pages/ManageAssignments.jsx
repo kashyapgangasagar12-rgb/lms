@@ -71,7 +71,7 @@ export default function ManageAssignments() {
 
             <div className="card shadow-sm mb-4 border-0 bg-off-white p-4">
                 <label className="form-label fw-bold">Active Course Selection</label>
-                <select className="form-select w-50" value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
+                <select className="form-select w-50 w-100-mobile" value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
                     <option value="">Choose a course to manage...</option>
                     {courses
                         .filter(c => user?.role === 'ADMIN' || c.instructorId === user?.id)
@@ -160,10 +160,12 @@ export default function ManageAssignments() {
                                                     <td><small className="text-muted">ID: {s.studentId}</small></td>
                                                     <td><span className="badge bg-light text-dark border">{s.grade || 'Pending'}</span></td>
                                                     <td className="text-end">
-                                                        <button className="btn btn-udemy-secondary btn-sm me-2"
-                                                            onClick={() => setViewingSubmission(s)}>Review</button>
-                                                        <button className="btn btn-udemy-primary btn-sm"
-                                                            onClick={() => setGrading({ ...grading, id: s.id })}>Grade</button>
+                                                        <div className="d-flex flex-wrap gap-2 justify-content-end">
+                                                            <button className="btn btn-udemy-secondary btn-sm"
+                                                                onClick={() => setViewingSubmission(s)}>Review</button>
+                                                            <button className="btn btn-udemy-primary btn-sm"
+                                                                onClick={() => setGrading({ ...grading, id: s.id })}>Grade</button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))}
