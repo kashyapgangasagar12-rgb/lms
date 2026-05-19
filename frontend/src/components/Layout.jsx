@@ -145,9 +145,9 @@ export default function Layout() {
             <div className="col-6 col-md-3 col-lg-2">
               <h6 className="fw-bold mb-3 text-white">Community</h6>
               <ul className="list-unstyled mb-0">
-                <li className="mb-2"><Link to="/" className="text-white text-decoration-none small opacity-75 hover-opacity-100">About Us</Link></li>
-                <li className="mb-2"><Link to="/" className="text-white text-decoration-none small opacity-75 hover-opacity-100">Support</Link></li>
-                <li className="mb-2"><Link to="/" className="text-white text-decoration-none small opacity-75 hover-opacity-100">Contact</Link></li>
+                <li className="mb-2"><Link to="/about" className="text-white text-decoration-none small opacity-75 hover-opacity-100">About Us</Link></li>
+                <li className="mb-2"><Link to="/support" className="text-white text-decoration-none small opacity-75 hover-opacity-100">Support</Link></li>
+                <li className="mb-2"><Link to="/support" className="text-white text-decoration-none small opacity-75 hover-opacity-100">Contact</Link></li>
               </ul>
             </div>
 
@@ -170,8 +170,8 @@ export default function Layout() {
             </div>
             <div className="d-flex gap-4">
                 <Link to="/privacy" className="text-white text-decoration-none extra-small opacity-75 hover-opacity-100">Privacy Policy</Link>
-                <Link to="/privacy" className="text-white text-decoration-none extra-small opacity-75 hover-opacity-100">Terms of Service</Link>
-                <Link to="/" className="text-white text-decoration-none extra-small opacity-75 hover-opacity-100">Cookie Settings</Link>
+                <Link to="/terms" className="text-white text-decoration-none extra-small opacity-75 hover-opacity-100">Terms of Service</Link>
+                <Link to="/privacy" className="text-white text-decoration-none extra-small opacity-75 hover-opacity-100">Cookie Settings</Link>
             </div>
           </div>
         </div>
