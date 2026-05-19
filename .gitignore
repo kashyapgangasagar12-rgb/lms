@@ -1,0 +1,30 @@
+# ===== Frontend =====
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# ===== Backend =====
+backend/target/
+backend/.mvn/
+backend/*.jar
+backend/*.war
+*.class
+
+# ===== IDE / OS =====
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+logs/
+
+# ===== Spring Boot =====
+backend/src/main/resources/application-local.properties
+backend/src/main/resources/application-secret.properties
