@@ -33,7 +33,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      <div className="card border-0 shadow-sm p-5 text-center mb-5" style={{ borderRadius: '1rem', background: 'linear-gradient(135deg, #1e293b, #0f172a)' }}>
+      <div className="card border-0 shadow-sm p-4 p-md-5 text-center mb-5" style={{ borderRadius: '1rem', background: 'linear-gradient(135deg, #1e293b, #0f172a)' }}>
         <h2 className="fw-bold text-white mb-4">LMS by the Numbers</h2>
         <div className="row g-4 justify-content-center">
           <div className="col-6 col-md-3">
