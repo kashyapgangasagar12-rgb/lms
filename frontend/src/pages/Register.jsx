@@ -23,8 +23,8 @@ export default function Register() {
     setLoading(true)
     try {
       await register({ email, password, fullName, role })
-      if (role === 'ADMIN') navigate('/admin', { replace: true })
-      else navigate(role === 'STUDENT' ? '/dashboard' : '/teacher', { replace: true })
+      // Registration successful, backend sent an OTP. Navigate to verify-otp page with the email in state
+      navigate('/verify-otp', { state: { email, role }, replace: true })
     } catch (err) {
       if (!err.response) {
         setError('Network error: Backend server is unreachable. Please ensure your backend is running on http://localhost:8080 and that your VS Code / Intel setup has correctly configured the proxy in vite.config.js.')

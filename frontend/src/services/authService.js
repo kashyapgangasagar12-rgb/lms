@@ -8,3 +8,6 @@ export const register = (data) =>
 
 export const getMe = () =>
   api.get('/user/me')
+
+export const verifyOtp = (email, otp) =>
+  api.post('/auth/verify-otp', { email, otp })

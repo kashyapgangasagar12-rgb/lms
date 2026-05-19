@@ -34,6 +34,12 @@ export function AuthProvider({ children }) {
 
   const register = async (data) => {
     const res = await authService.register(data)
+    // We don't set user/token yet because they need to verify OTP
+    return res
+  }
+
+  const verifyOtp = async (email, otp) => {
+    const res = await authService.verifyOtp(email, otp)
     const { token, ...userData } = res.data
     localStorage.setItem('token', token)
     setUser({ ...userData, token })
@@ -46,7 +52,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, verifyOtp, logout }}>
       {children}
     </AuthContext.Provider>
   )
