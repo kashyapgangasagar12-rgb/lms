@@ -42,7 +42,9 @@ export default function Assignments() {
                                 <div className="col-md-4 text-md-end mt-4 mt-md-0">
                                     {a.grade ? (
                                         <div className="mb-4">
-                                            <div className="display-6 fw-bold text-success">{a.grade}</div>
+                                            <div className="display-6 fw-bold text-success">
+                                                {isNaN(a.grade) ? a.grade : `${a.grade} / ${a.maxMarks || 100}`}
+                                            </div>
                                             <div className="small text-muted">{a.feedback || 'Good work!'}</div>
                                         </div>
                                     ) : (

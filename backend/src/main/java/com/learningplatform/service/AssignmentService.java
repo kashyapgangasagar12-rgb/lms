@@ -129,7 +129,7 @@ public class AssignmentService {
                 .filter(s -> s.getAssignment() != null && s.getAssignment().getCourse() != null && 
                             courseIds.contains(s.getAssignment().getCourse().getId()))
                 .filter(s -> s.getGrade() != null)
-                .mapToDouble(s -> parseGrade(s.getGrade()))
+                .mapToDouble(s -> parseGrade(s.getGrade(), s.getAssignment().getMaxMarks()))
                 .average()
                 .orElse(0.0);
 
@@ -144,7 +144,7 @@ public class AssignmentService {
                     double avg = allSubmissions.stream()
                             .filter(s -> s.getAssignment() != null && s.getAssignment().getId().equals(a.getId()))
                             .filter(s -> s.getGrade() != null)
-                            .mapToDouble(s -> parseGrade(s.getGrade()))
+                            .mapToDouble(s -> parseGrade(s.getGrade(), a.getMaxMarks()))
                             .average()
                             .orElse(0.0);
                     return TeacherAnalyticsDto.AssignmentTrend.builder()
@@ -164,10 +164,16 @@ public class AssignmentService {
                 .build();
     }
 
-    private double parseGrade(String grade) {
+    private double parseGrade(String grade, Integer maxMarks) {
         if (grade == null) return 0.0;
         try {
-            return Double.parseDouble(grade.replaceAll("[^\\d.]", ""));
+            double val = Double.parseDouble(grade.replaceAll("[^\\d.]", ""));
+            if (maxMarks != null && maxMarks > 0) {
+                if (val <= maxMarks) {
+                    return (val / maxMarks) * 100.0;
+                }
+            }
+            return val;
         } catch (NumberFormatException e) {
             String g = grade.trim().toUpperCase();
             if (g.startsWith("A")) return 95.0;

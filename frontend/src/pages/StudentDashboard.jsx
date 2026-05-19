@@ -108,7 +108,9 @@ export default function StudentDashboard() {
                       <div className="text-muted extra-small">Due: {a.dueDate ? new Date(a.dueDate).toLocaleDateString() : 'N/A'}</div>
                     </div>
                     {a.grade ? (
-                      <span className="badge bg-light text-success border">Graded: {a.grade}</span>
+                      <span className="badge bg-light text-success border">
+                        Graded: {isNaN(a.grade) ? a.grade : `${a.grade}/${a.maxMarks || 100}`}
+                      </span>
                     ) : (
                       <Link to={`/assignments/${a.id}/submit`} className="btn btn-udemy-secondary btn-sm">Submit</Link>
                     )}

@@ -75,11 +75,14 @@ public class SubmissionService {
         List<Submission> submissions = submissionRepository.findByStudentId(studentId);
         List<AnalyticsDto.Trend> trends = submissions.stream()
                 .filter(s -> s.getGrade() != null)
-                .map(s -> AnalyticsDto.Trend.builder()
-                        .attempt(0) // Will be set after sorting
-                        .score(parseGrade(s.getGrade()))
-                        .date(s.getSubmittedAt())
-                        .build())
+                .map(s -> {
+                    Integer max = s.getAssignment() != null ? s.getAssignment().getMaxMarks() : null;
+                    return AnalyticsDto.Trend.builder()
+                            .attempt(0) // Will be set after sorting
+                            .score(parseGrade(s.getGrade(), max))
+                            .date(s.getSubmittedAt())
+                            .build();
+                })
                 .sorted((t1, t2) -> t1.getDate().compareTo(t2.getDate()))
                 .collect(Collectors.toList());
 
@@ -102,11 +105,17 @@ public class SubmissionService {
                 .build();
     }
 
-    private double parseGrade(String grade) {
+    private double parseGrade(String grade, Integer maxMarks) {
         if (grade == null)
             return 0.0;
         try {
-            return Double.parseDouble(grade.replaceAll("[^\\d.]", ""));
+            double val = Double.parseDouble(grade.replaceAll("[^\\d.]", ""));
+            if (maxMarks != null && maxMarks > 0) {
+                if (val <= maxMarks) {
+                    return (val / maxMarks) * 100.0;
+                }
+            }
+            return val;
         } catch (NumberFormatException e) {
             String g = grade.trim().toUpperCase();
             if (g.startsWith("A"))
