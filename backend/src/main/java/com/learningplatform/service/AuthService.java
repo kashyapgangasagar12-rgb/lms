@@ -10,6 +10,7 @@ import com.learningplatform.security.JwtTokenProvider;
 import com.learningplatform.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,21 +32,62 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
     private final AuthenticationManager authenticationManager;
+    private final EmailService emailService;
+
+    @Value("${app.cors.allowed-origins:http://localhost:3000}")
+    private String[] allowedOrigins;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already registered");
         }
+        String otp = String.format("%06d", new java.util.Random().nextInt(999999));
+        
         User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .fullName(request.getFullName())
                 .role(request.getRole())
+                .isVerified(false)
+                .otp(otp)
+                .otpExpiry(java.time.LocalDateTime.now().plusMinutes(10))
                 .build();
         user = userRepository.save(user);
-        log.info("User registered successfully: {} with role {}", user.getEmail(), user.getRole());
+        
+        emailService.sendOtpEmail(user.getEmail(), otp);
+        log.info("User registered. OTP sent to: {}", user.getEmail());
+        
+        return AuthResponse.builder()
+                .email(user.getEmail())
+                .build(); // token is null until verified
+    }
+
+    @Transactional
+    public AuthResponse verifyOtp(String email, String otp) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.isVerified()) {
+            throw new RuntimeException("User already verified");
+        }
+
+        if (user.getOtp() == null || !user.getOtp().equals(otp)) {
+            throw new RuntimeException("Invalid OTP");
+        }
+
+        if (user.getOtpExpiry().isBefore(java.time.LocalDateTime.now())) {
+            throw new RuntimeException("OTP has expired");
+        }
+
+        user.setVerified(true);
+        user.setOtp(null);
+        user.setOtpExpiry(null);
+        userRepository.save(user);
+
+        log.info("User verified successfully: {}", user.getEmail());
         String token = tokenProvider.generateToken(user.getId(), user.getEmail(), user.getRole().name());
+        
         return AuthResponse.builder()
                 .token(token)
                 .type("Bearer")
@@ -60,7 +102,13 @@ public class AuthService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+        User user = userRepository.findById(principal.getId()).orElseThrow();
+        
+        if (!user.isVerified()) {
+            throw new RuntimeException("Please verify your email using the OTP sent to you");
+        }
         log.info("User logged in successfully: {}", principal.getEmail());
         String token = tokenProvider.generateToken(authentication);
         return AuthResponse.builder()
@@ -82,7 +130,9 @@ public class AuthService {
         user.setResetTokenExpiry(java.time.LocalDateTime.now().plusHours(1));
         userRepository.save(user);
 
-        log.info("PASSWORD RESET LINK: http://localhost:3000/reset-password/{}", token);
+        String frontendUrl = allowedOrigins.length > 0 ? allowedOrigins[0].split(",")[0] : "http://localhost:3000";
+        emailService.sendPasswordResetEmail(user.getEmail(), token, frontendUrl);
+        log.info("Password reset email sent to: {}", user.getEmail());
     }
 
     @Transactional

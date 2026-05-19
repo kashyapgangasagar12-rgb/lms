@@ -5,6 +5,7 @@ import com.learningplatform.dto.LoginRequest;
 import com.learningplatform.dto.RegisterRequest;
 import com.learningplatform.dto.ForgotPasswordRequest;
 import com.learningplatform.dto.ResetPasswordRequest;
+import com.learningplatform.dto.VerifyOtpRequest;
 import com.learningplatform.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,15 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
         log.info("Received registration request for: {} (Role: {})", request.getEmail(), request.getRole());
         return ResponseEntity.ok(authService.register(request));
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<?> verifyOtp(@Valid @RequestBody VerifyOtpRequest request) {
+        log.info("Received OTP verification request for: {}", request.getEmail());
+        return ResponseEntity.ok(authService.verifyOtp(request.getEmail(), request.getOtp()));
     }
 
     @PostMapping("/forgot-password")

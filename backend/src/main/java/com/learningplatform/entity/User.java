@@ -39,6 +39,13 @@ public class User {
     private String resetToken;
     private LocalDateTime resetTokenExpiry;
 
+    private String otp;
+    private LocalDateTime otpExpiry;
+    
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean isVerified = false;
+
     private LocalDateTime createdAt;
 
     @PrePersist
