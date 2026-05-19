@@ -126,10 +126,10 @@ export default function Layout() {
                 Start your journey into professional learning. We provide the tools you need to build your skills and master new technologies.
               </p>
               <div className="d-flex gap-3">
-                <span className="bg-dark p-2 rounded-circle text-white cursor-pointer hover-opacity-100" title="Twitter" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>𝕏</span>
-                <span className="bg-dark p-2 rounded-circle text-white cursor-pointer hover-opacity-100" title="LinkedIn" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>in</span>
-                <span className="bg-dark p-2 rounded-circle text-white cursor-pointer hover-opacity-100" title="YouTube" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>yt</span>
-                <span className="bg-dark p-2 rounded-circle text-white cursor-pointer hover-opacity-100" title="Instagram" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>ig</span>
+                <span className="bg-dark p-2 rounded-circle text-white cursor-pointer hover-opacity-100 d-flex align-items-center justify-content-center" title="Twitter" style={{ border: '1px solid rgba(255,255,255,0.1)', width: '36px', height: '36px' }}><i className="bi bi-twitter-x"></i></span>
+                <span className="bg-dark p-2 rounded-circle text-white cursor-pointer hover-opacity-100 d-flex align-items-center justify-content-center" title="LinkedIn" style={{ border: '1px solid rgba(255,255,255,0.1)', width: '36px', height: '36px' }}><i className="bi bi-linkedin"></i></span>
+                <span className="bg-dark p-2 rounded-circle text-white cursor-pointer hover-opacity-100 d-flex align-items-center justify-content-center" title="YouTube" style={{ border: '1px solid rgba(255,255,255,0.1)', width: '36px', height: '36px' }}><i className="bi bi-youtube"></i></span>
+                <span className="bg-dark p-2 rounded-circle text-white cursor-pointer hover-opacity-100 d-flex align-items-center justify-content-center" title="Instagram" style={{ border: '1px solid rgba(255,255,255,0.1)', width: '36px', height: '36px' }}><i className="bi bi-instagram"></i></span>
               </div>
             </div>
             
@@ -168,14 +168,14 @@ export default function Layout() {
                 <button className="btn btn-primary btn-sm px-4" type="button" style={{ backgroundColor: 'var(--color-primary)', border: 'none' }}>Join</button>
               </div>
               <div className="d-flex align-items-center gap-2 text-white-50 extra-small">
-                <span>🛡️</span> Zero spam, just pure learning.
+                <span><i className="bi bi-shield-fill text-success"></i></span> Zero spam, just pure learning.
               </div>
             </div>
           </div>
           
           <div className="d-flex flex-column flex-md-row justify-content-between align-items-center pt-4 border-top border-secondary">
             <div className="text-white-50 small mb-3 mb-md-0" style={{ opacity: '0.7' }}>
-              © 2026 LMS Platform, Inc. Crafted with ❤️ for learners worldwide.
+              © 2026 LMS Platform, Inc. Crafted with <i className="bi bi-heart-fill text-danger small mx-1"></i> for learners worldwide.
             </div>
             <div className="d-flex gap-4">
                 <Link to="/privacy" className="text-white text-decoration-none extra-small opacity-75 hover-opacity-100">Privacy Policy</Link>

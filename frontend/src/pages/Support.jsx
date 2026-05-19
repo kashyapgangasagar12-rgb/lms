@@ -32,7 +32,10 @@ export default function Support() {
           <div className="d-flex flex-column gap-3">
             {faqs.map((faq, idx) => (
               <div key={idx} className="card border-0 shadow-sm p-4 bg-off-white" style={{ borderRadius: '0.8rem' }}>
-                <h6 className="fw-bold text-dark mb-2">💡 {faq.q}</h6>
+                <h6 className="fw-bold text-dark mb-2">
+                  <i className="bi bi-lightbulb-fill text-primary me-2"></i>
+                  {faq.q}
+                </h6>
                 <p className="small text-muted mb-0" style={{ lineHeight: '1.6' }}>{faq.a}</p>
               </div>
             ))}
@@ -46,8 +49,8 @@ export default function Support() {
             <p className="small text-muted mb-4">Submit a ticket and our support team will reach out within 24 hours.</p>
             
             {success && (
-              <div className="alert alert-success d-flex align-items-center gap-2 mb-4" role="alert">
-                <span>✅</span>
+              <div className="alert alert-success d-flex align-items-center mb-4" role="alert">
+                <i className="bi bi-check-circle-fill me-2"></i>
                 <span>Inquiry submitted successfully! We'll contact you shortly.</span>
               </div>
             )}

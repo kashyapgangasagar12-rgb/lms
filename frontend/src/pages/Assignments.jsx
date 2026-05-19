@@ -58,8 +58,10 @@ export default function Assignments() {
             </div>
 
             {assignments.length === 0 && (
-                <div className="text-center py-5 my-5 text-muted">
-                    <div className="mb-4 display-1">🎯</div>
+                <div className="text-center py-5 my-5 text-muted animate-fade-in">
+                    <div className="mb-4 text-primary">
+                        <i className="bi bi-journal-check" style={{ fontSize: '4.5rem' }}></i>
+                    </div>
                     <h3>No pending assignments</h3>
                     <p>You're all caught up with your coursework.</p>
                 </div>
