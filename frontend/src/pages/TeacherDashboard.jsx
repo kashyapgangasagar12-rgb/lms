@@ -152,8 +152,8 @@ export default function TeacherDashboard() {
                         <h5 className="fw-bold m-0">Student Directory</h5>
                         <button className="btn btn-sm btn-link text-decoration-none" onClick={() => setShowStudents(false)}>Back to Trends</button>
                     </div>
-                    <div className="table-responsive">
-                        <table className="table table-hover align-middle">
+                    <div className="table-responsive shadow-sm rounded">
+                        <table className="table table-hover align-middle" style={{ minWidth: '600px' }}>
                             <thead className="table-light">
                                 <tr>
                                     <th className="px-3 border-0">NAME</th>
@@ -252,7 +252,7 @@ export default function TeacherDashboard() {
 
       {/* Student Details Overlay */}
       {selectedStudent && (
-          <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ background: 'rgba(0,0,0,0.5)', zIndex: 1050 }}>
+          <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style={{ background: 'rgba(0,0,0,0.5)', zIndex: 1200 }}>
               <div className="bg-white p-5 shadow rounded" style={{ maxWidth: '500px', width: '90%' }}>
                   <div className="d-flex justify-content-between align-items-center mb-4">
                       <h4 className="fw-bold m-0">{selectedStudent.fullName}</h4>

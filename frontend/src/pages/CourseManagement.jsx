@@ -122,8 +122,8 @@ export default function CourseManagement() {
                 </div>
             </div>
 
-            <div className="table-responsive">
-                <table className="table bg-white align-middle">
+            <div className="table-responsive shadow-sm rounded">
+                <table className="table bg-white align-middle" style={{ minWidth: '800px' }}>
                     <thead className="bg-dark text-white">
                         <tr>
                             <th className="px-4 py-3">Course</th>
@@ -167,7 +167,7 @@ export default function CourseManagement() {
 
             {/* Curriculum Modal */}
             {selectedCourseForCurriculum && (
-                <div className="modal d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <div className="modal d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1200 }}>
                     <div className="modal-dialog modal-dialog-centered modal-lg">
                         <div className="modal-content border-0 shadow-lg" style={{ borderRadius: '1rem' }}>
                             <div className="modal-header border-0 bg-dark text-white p-4">
@@ -226,7 +226,7 @@ export default function CourseManagement() {
 
             {/* Reviews Modal */}
             {selectedCourseForReviews && (
-                <div className="modal d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <div className="modal d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1200 }}>
                     <div className="modal-dialog modal-dialog-centered modal-lg">
                         <div className="modal-content border-0 shadow-lg" style={{ borderRadius: '1rem' }}>
                             <div className="modal-header border-0 bg-dark text-white p-4">

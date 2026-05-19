@@ -108,8 +108,8 @@ export default function AdminDashboard() {
                     <div className="card shadow-sm border-0 animate-slide-up" style={{ borderRadius: '0.8rem' }}>
                         <div className="card-body p-4">
                             <h5 className="fw-bold mb-4">User Management</h5>
-                            <div className="table-responsive">
-                                <table className="table align-middle">
+                            <div className="table-responsive shadow-sm rounded">
+                                <table className="table align-middle" style={{ minWidth: '800px' }}>
                                     <thead className="bg-dark text-white">
                                         <tr>
                                             <th className="px-4 py-3">Full Name</th>
@@ -154,8 +154,8 @@ export default function AdminDashboard() {
                             <h5 className="fw-bold m-0">Platform Courses</h5>
                             <span className="badge bg-primary px-3 py-2">{courses.length} Total</span>
                         </div>
-                        <div className="table-responsive">
-                            <table className="table align-middle">
+                        <div className="table-responsive shadow-sm rounded">
+                            <table className="table align-middle" style={{ minWidth: '800px' }}>
                                 <thead className="bg-dark text-white">
                                     <tr>
                                         <th className="px-4 py-3">Course Title</th>

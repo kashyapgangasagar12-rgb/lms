@@ -141,8 +141,8 @@ export default function ManageAssignments() {
                             {submissions.length === 0 ? (
                                 <p className="text-muted italic py-5 text-center">Select an assignment to view student work.</p>
                             ) : (
-                                <div className="table-responsive">
-                                    <table className="table align-middle">
+                                <div className="table-responsive shadow-sm rounded">
+                                    <table className="table align-middle" style={{ minWidth: '600px' }}>
                                         <thead className="bg-light">
                                             <tr>
                                                 <th>Student</th>
@@ -199,7 +199,7 @@ export default function ManageAssignments() {
 
             {/* View Submission Modal */}
             {viewingSubmission && (
-                <div className="modal d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <div className="modal d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1200 }}>
                     <div className="modal-dialog modal-dialog-centered modal-lg">
                         <div className="modal-content shadow-lg border-0">
                             <div className="modal-header border-0 bg-dark text-white">
