@@ -26,10 +26,23 @@ export default function CourseDetail() {
     setLoading(true)
     const promises = [
       getCourse(courseId),
-      getLessonsForCourse(courseId),
-      getReviewsByCourse(courseId)
+      getLessonsForCourse(courseId).catch(err => {
+        console.error("Failed to load lessons:", err)
+        return { data: [] }
+      }),
+      getReviewsByCourse(courseId).catch(err => {
+        console.error("Failed to load reviews:", err)
+        return { data: [] }
+      })
     ]
-    if (user) promises.push(getEnrolledCourses())
+    if (user) {
+      promises.push(
+        getEnrolledCourses().catch(err => {
+          console.error("Failed to load enrolled courses:", err)
+          return { data: [] }
+        })
+      )
+    }
 
     Promise.all(promises)
       .then(([courseRes, lessonsRes, reviewsRes, enrolledRes]) => {
@@ -41,7 +54,10 @@ export default function CourseDetail() {
           setIsEnrolled(enrolled)
         }
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.error("Failed to load course:", err)
+        setCourse(null)
+      })
       .finally(() => setLoading(false))
   }, [courseId, user])
 

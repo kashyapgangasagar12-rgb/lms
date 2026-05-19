@@ -106,9 +106,11 @@ public class AssignmentService {
         List<Long> courseIds = instructorCourses.stream().map(Course::getId).collect(Collectors.toList());
         if (courseIds.isEmpty()) return new TeacherAnalyticsDto();
 
-        long totalAssignments = assignmentRepository.findAll().stream()
+        List<Assignment> instructorAssignments = assignmentRepository.findAll().stream()
                 .filter(a -> a.getCourse() != null && courseIds.contains(a.getCourse().getId()))
-                .count();
+                .collect(Collectors.toList());
+
+        long totalAssignments = instructorAssignments.size();
 
         List<com.learningplatform.entity.Submission> allSubmissions = submissionRepository.findAll();
 
@@ -137,12 +139,28 @@ public class AssignmentService {
                 .distinct()
                 .count();
 
+        List<TeacherAnalyticsDto.AssignmentTrend> trends = instructorAssignments.stream()
+                .map(a -> {
+                    double avg = allSubmissions.stream()
+                            .filter(s -> s.getAssignment() != null && s.getAssignment().getId().equals(a.getId()))
+                            .filter(s -> s.getGrade() != null)
+                            .mapToDouble(s -> parseGrade(s.getGrade()))
+                            .average()
+                            .orElse(0.0);
+                    return TeacherAnalyticsDto.AssignmentTrend.builder()
+                            .title(a.getTitle())
+                            .averageScore(avg)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
         return TeacherAnalyticsDto.builder()
                 .totalAssignments(totalAssignments)
                 .totalSubmissions(totalSubmissions)
                 .pendingGrades(pendingGrades)
                 .averageScore(averageScore)
                 .totalStudents(totalStudents)
+                .trends(trends)
                 .build();
     }
 

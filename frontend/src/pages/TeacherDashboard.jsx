@@ -75,11 +75,11 @@ export default function TeacherDashboard() {
 
   // Chart Configuration
   const chartData = {
-    labels: analytics?.trends?.map(t => `Attempt ${t.attempt}`) || [],
+    labels: analytics?.trends?.map(t => t.title) || [],
     datasets: [
       {
-        label: 'Average Score',
-        data: analytics?.trends?.map(t => t.score) || [],
+        label: 'Average Score (%)',
+        data: analytics?.trends?.map(t => t.averageScore) || [],
         borderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
         tension: 0.3,
@@ -221,14 +221,29 @@ export default function TeacherDashboard() {
                 <div className="card shadow-sm border-0 p-4 flex-grow-1">
                     <div className="small text-muted fw-bold mb-3">QUICK STATS</div>
                     <div className="d-flex justify-content-between mb-2">
-                        <span className="small">Recent Enrollments</span>
-                        <span className="small fw-bold text-success">+{students.filter(s => s.id > 10).length}</span>
+                        <span className="small">Submissions Received</span>
+                        <span className="small fw-bold text-dark">{analytics?.totalSubmissions || 0}</span>
+                    </div>
+                    <div className="d-flex justify-content-between mb-2">
+                        <span className="small">Grading Completion</span>
+                        <span className="small fw-bold text-success">
+                          {analytics?.totalSubmissions > 0 
+                            ? Math.round(((analytics.totalSubmissions - analytics.pendingGrades) / analytics.totalSubmissions) * 100) 
+                            : 100}%
+                        </span>
                     </div>
                     <div className="progress mb-3" style={{ height: '5px' }}>
-                        <div className="progress-bar bg-success" style={{ width: '70%' }}></div>
+                        <div 
+                          className="progress-bar bg-success" 
+                          style={{ 
+                            width: `${analytics?.totalSubmissions > 0 
+                              ? Math.round(((analytics.totalSubmissions - analytics.pendingGrades) / analytics.totalSubmissions) * 100) 
+                              : 100}%` 
+                          }}
+                        ></div>
                     </div>
                     <div className="small text-muted mt-auto pt-2">
-                        Overall student engagement is <span className="text-primary fw-bold">Optimized</span>
+                        Overall student average is <span className="text-primary fw-bold">{analytics?.averageScore?.toFixed(1) || 0}%</span>
                     </div>
                 </div>
             </div>
