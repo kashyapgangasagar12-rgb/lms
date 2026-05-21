@@ -14,15 +14,18 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SubmissionService {
 
     private final SubmissionRepository submissionRepository;
     private final AssignmentRepository assignmentRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public SubmissionDto submitAssignment(SubmissionDto dto) {
         Long assignmentId = dto.getAssignmentId();
         Long studentId = dto.getStudentId();
@@ -47,6 +50,7 @@ public class SubmissionService {
         return mapToDto(saved);
     }
 
+    @Transactional
     public SubmissionDto gradeSubmission(Long submissionId, String grade, String feedback) {
         if (submissionId == null) {
             throw new IllegalArgumentException("Submission ID cannot be null");
