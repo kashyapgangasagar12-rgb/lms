@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import api from '../services/api'
 
 export default function ForgotPassword() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
@@ -16,6 +17,9 @@ export default function ForgotPassword() {
     try {
       const res = await api.post('/auth/forgot-password', { email })
       setMessage(res.data.message)
+      setTimeout(() => {
+        navigate('/reset-password', { state: { email } })
+      }, 2500)
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong')
     } finally {

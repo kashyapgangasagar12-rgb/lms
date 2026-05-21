@@ -1,11 +1,18 @@
 import { useState } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import api from '../services/api'
 
 export default function ResetPassword() {
-  const { token } = useParams()
   const navigate = useNavigate()
-  const [form, setForm] = useState({ newPassword: '', confirmPassword: '' })
+  const location = useLocation()
+  const initialEmail = location.state?.email || ''
+
+  const [form, setForm] = useState({
+    email: initialEmail,
+    token: '', // this is the OTP/verification code
+    newPassword: '',
+    confirmPassword: ''
+  })
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -22,7 +29,8 @@ export default function ResetPassword() {
     setMessage('')
     try {
       const res = await api.post('/auth/reset-password', { 
-        token, 
+        email: form.email,
+        token: form.token, 
         newPassword: form.newPassword 
       })
       setMessage(res.data.message)
@@ -36,16 +44,43 @@ export default function ResetPassword() {
 
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center bg-off-white px-3">
-      <div className="card shadow-lg border-0" style={{ maxWidth: '450px', width: '100%', borderRadius: '12px' }}>
+      <div className="card shadow-lg border-0 animate-fade-in" style={{ maxWidth: '450px', width: '100%', borderRadius: '12px' }}>
         <div className="card-body p-5">
           <div className="text-center mb-4">
             <Link to="/" className="text-decoration-none h2 fw-bold" style={{ color: 'var(--color-primary)' }}>LMS</Link>
             <div className="text-muted extra-small text-uppercase mb-4" style={{ letterSpacing: '2px' }}>Elevate Your Learning</div>
             <h3 className="fw-bold mt-3 mb-1">Set New Password</h3>
-            <p className="text-muted small">Choose a strong password to secure your account.</p>
+            <p className="text-muted small">Enter the 6-digit code sent to your email and choose a strong password.</p>
           </div>
 
           <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label text-gray small fw-bold">Email Address</label>
+              <input
+                type="email"
+                className="form-control py-2 shadow-sm border-0 bg-off-white"
+                placeholder="name@example.com"
+                required
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                disabled={!!initialEmail}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label text-gray small fw-bold">Verification Code (OTP)</label>
+              <input
+                type="text"
+                maxLength={6}
+                className="form-control py-2 shadow-sm border-0 bg-off-white font-monospace text-center fs-4"
+                placeholder="000000"
+                style={{ letterSpacing: '8px' }}
+                required
+                value={form.token}
+                onChange={(e) => setForm({ ...form, token: e.target.value.replace(/\D/g, '') })}
+              />
+            </div>
+
             <div className="mb-3">
               <label className="form-label text-gray small fw-bold">New Password</label>
               <input
@@ -83,8 +118,8 @@ export default function ResetPassword() {
             </button>
           </form>
 
-          <div className="text-center mt-4 text-muted extra-small">
-            Redirecting to login after success...
+          <div className="text-center mt-4">
+            <Link to="/login" className="text-decoration-none text-muted small hover-opacity-100">← Back to Login</Link>
           </div>
         </div>
       </div>

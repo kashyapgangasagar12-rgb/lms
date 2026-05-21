@@ -125,25 +125,26 @@ public class AuthService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("No account found with email: " + email));
 
-        String token = java.util.UUID.randomUUID().toString();
-        user.setResetToken(token);
+        String otp = String.format("%06d", new java.util.Random().nextInt(999999));
+        user.setResetToken(otp);
         user.setResetTokenExpiry(java.time.LocalDateTime.now().plusHours(1));
         userRepository.save(user);
 
-        String frontendUrl = (allowedOrigins != null && !allowedOrigins.isBlank())
-                ? allowedOrigins.split(",")[0].trim()
-                : "http://localhost:3000";
-        emailService.sendPasswordResetEmail(user.getEmail(), token, frontendUrl);
-        log.info("Password reset email sent to: {}", user.getEmail());
+        emailService.sendPasswordResetEmail(user.getEmail(), otp);
+        log.info("Password reset OTP sent to: {}", user.getEmail());
     }
 
     @Transactional
-    public void resetPassword(String token, String newPassword) {
-        User user = userRepository.findByResetToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid or expired reset token"));
+    public void resetPassword(String email, String token, String newPassword) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("No account found with email: " + email));
+
+        if (user.getResetToken() == null || !user.getResetToken().equals(token)) {
+            throw new IllegalArgumentException("Invalid reset verification code");
+        }
 
         if (user.getResetTokenExpiry().isBefore(java.time.LocalDateTime.now())) {
-            throw new IllegalArgumentException("Reset token has expired. Please request a new password reset link.");
+            throw new IllegalArgumentException("Reset verification code has expired. Please request a new code.");
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));

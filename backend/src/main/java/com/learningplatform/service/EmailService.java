@@ -31,30 +31,29 @@ public class EmailService {
      * Sends a password reset email containing a clickable reset link.
      */
     @Async
-    public void sendPasswordResetEmail(String toEmail, String resetToken, String frontendUrl) {
-        String resetLink = frontendUrl + "/reset-password/" + resetToken;
+    public void sendPasswordResetEmail(String toEmail, String otp) {
         String subject = "Reset Your LMS Password";
         String htmlBody = """
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 32px;
                             background: #f9f9f9; border-radius: 8px;">
                     <h2 style="color: #4F46E5;">LMS Platform – Password Reset</h2>
                     <p>Hello,</p>
-                    <p>We received a request to reset your password. Click the button below to choose a new one:</p>
+                    <p>We received a request to reset your password. Use the verification code below to set a new password:</p>
                     <div style="text-align: center; margin: 32px 0;">
-                        <a href="%s"
-                           style="background-color: #4F46E5; color: white; padding: 14px 28px;
-                                  text-decoration: none; border-radius: 6px; font-size: 16px;">
-                            Reset Password
-                        </a>
+                        <span style="font-size: 40px; font-weight: bold; letter-spacing: 12px;
+                                     color: #4F46E5; background: #EEF2FF; padding: 16px 32px;
+                                     border-radius: 8px; display: inline-block;">
+                            %s
+                        </span>
                     </div>
                     <p style="color: #6B7280; font-size: 13px;">
-                        This link will expire in <strong>1 hour</strong>.<br>
+                        This code will expire in <strong>1 hour</strong>.<br>
                         If you did not request a password reset, you can safely ignore this email.
                     </p>
                     <hr style="border: none; border-top: 1px solid #E5E7EB; margin: 24px 0;">
                     <p style="color: #9CA3AF; font-size: 12px;">LMS Platform · Powered by Brevo</p>
                 </div>
-                """.formatted(resetLink);
+                """.formatted(otp);
 
         sendHtmlEmail(toEmail, subject, htmlBody);
     }

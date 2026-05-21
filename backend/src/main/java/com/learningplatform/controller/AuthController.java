@@ -47,13 +47,13 @@ public class AuthController {
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
         log.info("Processing forgot password for: {}", request.getEmail());
         authService.processForgotPassword(request.getEmail());
-        return ResponseEntity.ok(Map.of("message", "Password reset link has been sent to your email (simulated in console)"));
+        return ResponseEntity.ok(Map.of("message", "Verification code has been sent to your email"));
     }
 
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
-        log.info("Processing reset password for token: {}", request.getToken());
-        authService.resetPassword(request.getToken(), request.getNewPassword());
+        log.info("Processing reset password for email: {}", request.getEmail());
+        authService.resetPassword(request.getEmail(), request.getToken(), request.getNewPassword());
         return ResponseEntity.ok(Map.of("message", "Password has been successfully reset"));
     }
 }
