@@ -4,7 +4,7 @@ import axios from 'axios'
 // Local dev: leave unset to use relative /api (Vite proxy)
 const API_BASE = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api`
-  : '/api'
+  : (import.meta.env.DEV ? '/api' : 'https://lms-7are.onrender.com/api')
 
 const api = axios.create({
   baseURL: API_BASE,
