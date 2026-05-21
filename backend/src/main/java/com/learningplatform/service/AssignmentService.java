@@ -11,12 +11,14 @@ import com.learningplatform.repository.SubmissionRepository;
 import com.learningplatform.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AssignmentService {
 
     private final AssignmentRepository assignmentRepository;
@@ -24,6 +26,7 @@ public class AssignmentService {
     private final UserRepository userRepository;
     private final SubmissionRepository submissionRepository;
 
+    @Transactional
     public AssignmentDto createAssignment(AssignmentDto dto) {
         Long courseId = dto.getCourseId();
         if (courseId == null) {
@@ -95,7 +98,6 @@ public class AssignmentService {
                 .collect(Collectors.toList());
     }
 
-    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public TeacherAnalyticsDto getTeacherAnalytics(Long instructorId) {
         if (instructorId == null) return new TeacherAnalyticsDto();
 

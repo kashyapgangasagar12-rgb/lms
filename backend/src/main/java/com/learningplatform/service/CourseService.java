@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CourseService {
 
     private final CourseRepository courseRepository;
@@ -43,6 +44,7 @@ public class CourseService {
         return convertToDto(getCourseById(id));
     }
 
+    @Transactional
     public CourseDto createCourse(CourseDto dto) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
         var instructorUser = (currentUserId != null)
@@ -64,6 +66,7 @@ public class CourseService {
         return convertToDto(saved);
     }
 
+    @Transactional
     public CourseDto updateCourse(Long id, CourseDto dto) {
         Course course = getCourseById(id);
 

@@ -11,12 +11,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service for managing lessons within topics.
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class LessonService {
 
     private final LessonRepository lessonRepository;
@@ -26,6 +28,7 @@ public class LessonService {
     private final AssignmentRepository assignmentRepository;
     private final SubmissionRepository submissionRepository;
 
+    @Transactional
     public LessonDto createLesson(LessonDto dto) {
         Long courseIdBoxed = dto.getCourseId();
         if (courseIdBoxed == null) {
@@ -49,6 +52,7 @@ public class LessonService {
         return toDto(saved);
     }
 
+    @Transactional
     public void completeLesson(Long userId, Long lessonId) {
         if (lessonCompletionRepository.findByUserIdAndLessonId(userId, lessonId).isPresent()) {
             return;
