@@ -133,7 +133,7 @@ export default function CourseDetail() {
           >
             <div className="modal-content border-0 bg-dark shadow-lg" style={{ borderRadius: '1rem', overflow: 'hidden' }}>
               <div className="modal-header border-0 bg-dark text-white px-4 py-3">
-                <h5 className="modal-title fw-bold">🎬 Course Preview</h5>
+                <h5 className="modal-title fw-bold">Course Preview</h5>
                 <button type="button" className="btn-close btn-close-white" onClick={closePreview}></button>
               </div>
               <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
@@ -223,7 +223,13 @@ export default function CourseDetail() {
                       </div>
                     </div>
                     {isEnrolled ? (
-                      <span className="text-muted small">Enrolled</span>
+                      <Link
+                        to={`/courses/${course.id}/lessons`}
+                        className="btn btn-sm btn-outline-primary py-0 px-2 text-decoration-none"
+                        style={{ fontSize: '0.75rem' }}
+                      >
+                        ▶ View Lesson
+                      </Link>
                     ) : idx < 2 && lesson.videoUrl ? (
                       <button
                         className="btn btn-sm btn-outline-primary py-0 px-2"
