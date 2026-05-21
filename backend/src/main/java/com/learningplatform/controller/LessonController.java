@@ -5,6 +5,7 @@ import com.learningplatform.dto.ProgressDto;
 import com.learningplatform.security.UserPrincipal;
 import com.learningplatform.service.LessonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -45,7 +46,7 @@ public class LessonController {
     @GetMapping("/progress")
     public ResponseEntity<ProgressDto> getProgress(@AuthenticationPrincipal UserPrincipal principal) {
         if (principal == null)
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         return ResponseEntity.ok(lessonService.getStudentProgress(principal.getId()));
     }
 
@@ -54,7 +55,7 @@ public class LessonController {
             @AuthenticationPrincipal UserPrincipal principal,
             @PathVariable Long courseId) {
         if (principal == null)
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         return ResponseEntity.ok(lessonService.getCourseProgress(principal.getId(), courseId));
     }
 

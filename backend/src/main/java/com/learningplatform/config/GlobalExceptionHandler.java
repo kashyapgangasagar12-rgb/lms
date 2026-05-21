@@ -55,11 +55,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException e) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", e.getMessage() != null ? e.getMessage() : "Invalid argument");
+        return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler(java.util.NoSuchElementException.class)
+    public ResponseEntity<Map<String, String>> handleNotFound(java.util.NoSuchElementException e) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", "Resource not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, String>> handleRuntime(RuntimeException e) {
+        log.error("Unhandled runtime exception: ", e);
         Map<String, String> body = new HashMap<>();
         body.put("error", e.getMessage() != null ? e.getMessage() : "Server error");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 
 

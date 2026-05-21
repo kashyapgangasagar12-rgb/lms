@@ -4,6 +4,7 @@ import com.learningplatform.dto.CourseDto;
 import com.learningplatform.service.CourseService;
 import com.learningplatform.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,7 @@ public class CourseController {
     @PostMapping("/{id}/enroll")
     public ResponseEntity<Void> enroll(@PathVariable Long id) {
         Long userId = SecurityUtils.getCurrentUserId();
+        if (userId == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         courseService.enrollStudent(userId, id);
         return ResponseEntity.ok().build();
     }
@@ -55,6 +57,7 @@ public class CourseController {
     @GetMapping("/enrolled")
     public ResponseEntity<java.util.List<CourseDto>> getEnrolled() {
         Long userId = SecurityUtils.getCurrentUserId();
+        if (userId == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         return ResponseEntity.ok(courseService.getEnrolledCourses(userId));
     }
 }
