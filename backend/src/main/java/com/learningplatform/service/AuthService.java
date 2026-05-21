@@ -35,7 +35,7 @@ public class AuthService {
     private final EmailService emailService;
 
     @Value("${app.cors.allowed-origins:http://localhost:3000}")
-    private String[] allowedOrigins;
+    private String allowedOrigins;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -123,14 +123,16 @@ public class AuthService {
 
     public void processForgotPassword(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+                .orElseThrow(() -> new IllegalArgumentException("No account found with email: " + email));
 
         String token = java.util.UUID.randomUUID().toString();
         user.setResetToken(token);
         user.setResetTokenExpiry(java.time.LocalDateTime.now().plusHours(1));
         userRepository.save(user);
 
-        String frontendUrl = allowedOrigins.length > 0 ? allowedOrigins[0].split(",")[0] : "http://localhost:3000";
+        String frontendUrl = (allowedOrigins != null && !allowedOrigins.isBlank())
+                ? allowedOrigins.split(",")[0].trim()
+                : "http://localhost:3000";
         emailService.sendPasswordResetEmail(user.getEmail(), token, frontendUrl);
         log.info("Password reset email sent to: {}", user.getEmail());
     }
@@ -138,10 +140,10 @@ public class AuthService {
     @Transactional
     public void resetPassword(String token, String newPassword) {
         User user = userRepository.findByResetToken(token)
-                .orElseThrow(() -> new RuntimeException("Invalid or expired reset token"));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid or expired reset token"));
 
         if (user.getResetTokenExpiry().isBefore(java.time.LocalDateTime.now())) {
-            throw new RuntimeException("Reset token has expired");
+            throw new IllegalArgumentException("Reset token has expired. Please request a new password reset link.");
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));

@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Map<String, String>> handleBadCredentials(BadCredentialsException e) {
         Map<String, String> body = new HashMap<>();
-        body.put("error", "Invalid email or password");
+        body.put("message", "Invalid email or password");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
 
@@ -37,35 +37,35 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
     public ResponseEntity<Map<String, String>> handleAccessDenied(org.springframework.security.access.AccessDeniedException e) {
         Map<String, String> body = new HashMap<>();
-        body.put("error", "Access denied: " + e.getMessage());
+        body.put("message", "Access denied: " + e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
     @ExceptionHandler(org.springframework.security.core.AuthenticationException.class)
     public ResponseEntity<Map<String, String>> handleAuthenticationException(org.springframework.security.core.AuthenticationException e) {
         Map<String, String> body = new HashMap<>();
-        body.put("error", "Authentication failed: " + e.getMessage());
+        body.put("message", "Authentication failed: " + e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
 
     @ExceptionHandler(SecurityException.class)
     public ResponseEntity<Map<String, String>> handleSecurityError(SecurityException e) {
         Map<String, String> body = new HashMap<>();
-        body.put("error", e.getMessage() != null ? e.getMessage() : "Access denied");
+        body.put("message", e.getMessage() != null ? e.getMessage() : "Access denied");
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException e) {
         Map<String, String> body = new HashMap<>();
-        body.put("error", e.getMessage() != null ? e.getMessage() : "Invalid argument");
+        body.put("message", e.getMessage() != null ? e.getMessage() : "Invalid argument");
         return ResponseEntity.badRequest().body(body);
     }
 
     @ExceptionHandler(java.util.NoSuchElementException.class)
     public ResponseEntity<Map<String, String>> handleNotFound(java.util.NoSuchElementException e) {
         Map<String, String> body = new HashMap<>();
-        body.put("error", "Resource not found");
+        body.put("message", "Resource not found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleRuntime(RuntimeException e) {
         log.error("Unhandled runtime exception: ", e);
         Map<String, String> body = new HashMap<>();
-        body.put("error", e.getMessage() != null ? e.getMessage() : "Server error");
+        body.put("message", e.getMessage() != null ? e.getMessage() : "Server error");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 
@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleJsonError(HttpMessageNotReadableException e) {
         log.error("JSON parse error: {}", e.getMessage());
         Map<String, String> body = new HashMap<>();
-        body.put("error", "Invalid request format: " + e.getMostSpecificCause().getMessage());
+        body.put("message", "Invalid request format: " + e.getMostSpecificCause().getMessage());
         return ResponseEntity.badRequest().body(body);
     }
 
@@ -90,7 +90,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleGeneric(Exception e) {
         log.error("Unhandled exception: ", e);
         Map<String, String> body = new HashMap<>();
-        body.put("error", "Internal server error: " + e.getMessage());
+        body.put("message", "Internal server error: " + e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 }
